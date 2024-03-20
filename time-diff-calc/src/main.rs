@@ -1,29 +1,45 @@
 /* Made by Sam Stockstrom */
 /* a simple time difference calculator for personal use */
-/* 60 / min | 60 min / hr | 24 hr / day */
 
 use text_io::read; // for user input
 use regex::Regex;
 fn main() 
 {
-    test();
-    // user input
-    //println!("start time (hh:mm::ss am/pm) 12 hour clock: ");
-    //let start_time_input: String = read!("{}\n");
-    //let start_time = analyze(start_time_input.trim().to_string(), 0);
-    
-    //println!("end time (hh:mm:ss am/pm) 12 hour clock: ");
-    // let end_time_input: String = read!("{}\n");
-    //let difference: i32 = analyze(end_time_input.trim().to_string(), start_time);
-    //println!("Time Difference: {} hours", difference)
+    //test();
+    println!("start time (hh:mm::ss am/pm) 12 hour clock: ");
+    let start_time_input: String = read!("{}\n");
+    println!();
+    println!("end time (hh:mm:ss am/pm) 12 hour clock: ");
+    let end_time_input: String = read!("{}\n");
+    println!();
+    let result: Option<Vec<i32>> = analyze(start_time_input.trim().to_string(), end_time_input.trim().to_string());
+
+    if result.is_some()
+    {
+        let unwrapped = result.unwrap();
+        println!("\ntime difference:");
+        println!("{} hours {} minutes {} and seconds", unwrapped[0], unwrapped[1], unwrapped[2]);
+    }
+    else
+    {
+        println!("[!] [error::main] returned empty result!");
+    }
 }
 
 fn test()
 {
     let test1: Option<Vec<i32>> = analyze("01:37:00 pm".to_string(), "02:37:00 pm".to_string());
-    if test1.is_some() && test1.unwrap()[0] == 1
+    if test1.is_some()
     {
-        println!("[0] Test 1 passed!");
+        let test1_unwrapped = test1.unwrap();
+        if test1_unwrapped[0] == 1 && test1_unwrapped[1] == 0 && test1_unwrapped[2] == 0
+        {
+            println!("[0] Test 1 passed!");
+        }
+        else
+        {
+            println!("[!] Test 1 failed!");
+        }
     }
     else
     {
@@ -31,9 +47,17 @@ fn test()
     }
 
     let test2: Option<Vec<i32>> = analyze("08:23:32 am".to_string(), "02:37:00 pm".to_string());
-    if test2.is_some() && test2.unwrap()[0] == 6
+    if test2.is_some()
     {
-        println!("[0] Test 2 passed!");
+        let test2_unwrapped = test2.unwrap();
+        if test2_unwrapped[0] == 6 && test2_unwrapped[1] == 13 && test2_unwrapped[2] == 28
+        {
+            println!("[0] Test 2 passed!");
+        }
+        else
+        {
+            println!("[!] Test 2 failed!");
+        }
     }
     else
     {
@@ -41,9 +65,17 @@ fn test()
     }
 
     let test3: Option<Vec<i32>> = analyze("11:37:00 am".to_string(), "03:37:00 pm".to_string());
-    if test3.is_some() && test3.unwrap()[0] == 4
+    if test3.is_some()
     {
-        println!("[0] Test 3 passed!");
+        let test3_unwrapped = test3.unwrap();
+        if test3_unwrapped[0] == 4 && test3_unwrapped[1] == 0 && test3_unwrapped[2] == 0
+        {
+            println!("[0] Test 3 passed!");
+        }
+        else
+        {
+            println!("[!] Test 3 failed!");
+        }
     }
     else
     {
@@ -57,7 +89,7 @@ fn analyze(start_user_input: String, end_user_input: String) -> Option<Vec<i32>>
     let re = Regex::new(r"[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{1,3})?\s[A-Za-z]+").unwrap();
     if !re.is_match(&start_user_input) || !re.is_match(&end_user_input)
     {
-        println!("[error::regex] incorrect format!");
+        println!("[!] [error::regex] incorrect format!");
         return None;
     }
 
@@ -71,10 +103,14 @@ fn analyze(start_user_input: String, end_user_input: String) -> Option<Vec<i32>>
     let mut end_h: i32 = times[1][0].parse().unwrap();
     let end_m: i32 = times[1][1].parse().unwrap();
     let end_s: i32;
-    let end_e: &str = times[0][2];
+    let end_e: &str = times[1][2];
+
+    println!("[0] [debug::start] given 12 hr = {}", start_h);
+    println!("[0] [debug::end] given 12 hr = {}", end_h);
 
     if start_e.contains(" pm")
     {
+        println!("[0] [debug::start] PM");
         let mut formatted_end = start_e.replace(" pm", "");
         if formatted_end.starts_with("0") { formatted_end.remove(0); }
         start_s = formatted_end.parse().unwrap();
@@ -86,6 +122,7 @@ fn analyze(start_user_input: String, end_user_input: String) -> Option<Vec<i32>>
     }
     else if start_e.contains(" am")
     {
+        println!("[0] [debug::start] AM");
         let mut formatted_end = start_e.replace(" am", "");
         if formatted_end.starts_with("0") { formatted_end.remove(0); }
         start_s = formatted_end.parse().unwrap();
@@ -98,12 +135,13 @@ fn analyze(start_user_input: String, end_user_input: String) -> Option<Vec<i32>>
     }
     else
     {
-        println!("[error::logic] incorrect format!");
+        println!("[!] [error::logic] incorrect format!");
         return None;
     }
 
     if end_e.contains(" pm")
     {
+        println!("[0] [debug::end] PM");
         let mut formatted_end = end_e.replace(" pm", "");
         if formatted_end.starts_with("0") { formatted_end.remove(0); }
         end_s = formatted_end.parse().unwrap();
@@ -115,6 +153,7 @@ fn analyze(start_user_input: String, end_user_input: String) -> Option<Vec<i32>>
     }
     else if end_e.contains(" am")
     {
+        println!("[0] [debug::end] AM");
         let mut formatted_end = end_e.replace(" am", "");
         if formatted_end.starts_with("0") { formatted_end.remove(0); }
         end_s = formatted_end.parse().unwrap();
@@ -127,24 +166,31 @@ fn analyze(start_user_input: String, end_user_input: String) -> Option<Vec<i32>>
     }
     else
     {
-        println!("[error::logic] incorrect format!");
+        println!("[!] [error::logic] incorrect format!");
         return None;
     }
 
     if start_h > 24 || start_m > 59 || start_s > 59
     {
-        println!("[error::time::start] incorrect time!");
+        println!("[!] [error::time::start] incorrect time!");
         return None;
     }
 
     if end_h > 24 || end_m > 59 || end_s > 59
     {
-        println!("[error::time::end] incorrect time!");
+        println!("[!] [error::time::end] incorrect time!");
         return None;
     }
     
+    let mut calc_h: i32 = end_h - start_h;
+    let mut calc_m: i32 = end_m - start_m;
+    let mut calc_s: i32 = end_s - start_s;
 
-    let correct: Vec<i32> = vec![(start_h - end_h).abs(),0,0];
+    if calc_s < 0 { calc_m -= 1; calc_s = 60 - calc_s.abs(); }
+    if calc_m < 0 { calc_h -= 1; calc_m = 60 - calc_m.abs(); }
+
+    let correct: Vec<i32> = vec![calc_h,calc_m,calc_s];
+    println!("[0] [debug::logic] diff = {:?}", correct);
     return Some(correct);
 
 }
