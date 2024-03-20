@@ -28,6 +28,8 @@ fn main()
     {
         println!("[!] [error::main] returned empty result!");
     }
+
+    let _input: String = read!("{}\n"); // wait for user input so it doesn't close
 }
 
 /* fn test()
