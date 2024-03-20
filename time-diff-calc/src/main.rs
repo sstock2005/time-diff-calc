@@ -109,12 +109,12 @@ fn analyze(start_user_input: String, end_user_input: String) -> Option<Vec<i32>>
     let end_s: i32;
     let end_e: &str = times[1][2];
 
-    println!("[0] [debug::start] given 12 hr = {}", start_h);
-    println!("[0] [debug::end] given 12 hr = {}", end_h);
+    // println!("[0] [debug::start] given 12 hr = {}", start_h);
+    // println!("[0] [debug::end] given 12 hr = {}", end_h);
 
     if start_e.contains(" pm")
     {
-        println!("[0] [debug::start] PM");
+        // println!("[0] [debug::start] PM");
         let mut formatted_end = start_e.replace(" pm", "");
         if formatted_end.starts_with("0") { formatted_end.remove(0); }
         start_s = formatted_end.parse().unwrap();
@@ -126,7 +126,7 @@ fn analyze(start_user_input: String, end_user_input: String) -> Option<Vec<i32>>
     }
     else if start_e.contains(" am")
     {
-        println!("[0] [debug::start] AM");
+        // println!("[0] [debug::start] AM");
         let mut formatted_end = start_e.replace(" am", "");
         if formatted_end.starts_with("0") { formatted_end.remove(0); }
         start_s = formatted_end.parse().unwrap();
@@ -145,7 +145,7 @@ fn analyze(start_user_input: String, end_user_input: String) -> Option<Vec<i32>>
 
     if end_e.contains(" pm")
     {
-        println!("[0] [debug::end] PM");
+        // println!("[0] [debug::end] PM");
         let mut formatted_end = end_e.replace(" pm", "");
         if formatted_end.starts_with("0") { formatted_end.remove(0); }
         end_s = formatted_end.parse().unwrap();
@@ -157,7 +157,7 @@ fn analyze(start_user_input: String, end_user_input: String) -> Option<Vec<i32>>
     }
     else if end_e.contains(" am")
     {
-        println!("[0] [debug::end] AM");
+        // println!("[0] [debug::end] AM");
         let mut formatted_end = end_e.replace(" am", "");
         if formatted_end.starts_with("0") { formatted_end.remove(0); }
         end_s = formatted_end.parse().unwrap();
@@ -194,7 +194,7 @@ fn analyze(start_user_input: String, end_user_input: String) -> Option<Vec<i32>>
     if calc_m < 0 { calc_h -= 1; calc_m = 60 - calc_m.abs(); }
 
     let correct: Vec<i32> = vec![calc_h,calc_m,calc_s];
-    println!("[0] [debug::logic] diff = {:?}", correct);
+    // println!("[0] [debug::logic] diff = {:?}", correct);
     return Some(correct);
 
 }
