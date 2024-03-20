@@ -5,11 +5,15 @@ use text_io::read; // for user input
 use regex::Regex;
 fn main() 
 {
-    //test();
-    println!("start time (hh:mm::ss am/pm) 12 hour clock: ");
+    // test();
+    println!();
+    println!("[accepted format(s)]");
+    println!("12 HOUR CLOCK [hh:mm::ss am/pm]");
+    println!("12 HOUR CLOCK [h:mm:ss am/pm]\n");
+    println!("start time: ");
     let start_time_input: String = read!("{}\n");
     println!();
-    println!("end time (hh:mm:ss am/pm) 12 hour clock: ");
+    println!("end time: ");
     let end_time_input: String = read!("{}\n");
     println!();
     let result: Option<Vec<i32>> = analyze(start_time_input.trim().to_string(), end_time_input.trim().to_string());
@@ -26,9 +30,9 @@ fn main()
     }
 }
 
-fn test()
+/* fn test()
 {
-    let test1: Option<Vec<i32>> = analyze("01:37:00 pm".to_string(), "02:37:00 pm".to_string());
+    let test1: Option<Vec<i32>> = analyze("1:37:00 pm".to_string(), "2:37:00 pm".to_string());
     if test1.is_some()
     {
         let test1_unwrapped = test1.unwrap();
@@ -46,7 +50,7 @@ fn test()
         println!("[!] Test 1 failed!");
     }
 
-    let test2: Option<Vec<i32>> = analyze("08:23:32 am".to_string(), "02:37:00 pm".to_string());
+    let test2: Option<Vec<i32>> = analyze("8:23:32 am".to_string(), "2:37:00 pm".to_string());
     if test2.is_some()
     {
         let test2_unwrapped = test2.unwrap();
@@ -64,7 +68,7 @@ fn test()
         println!("[!] Test 2 failed!");
     }
 
-    let test3: Option<Vec<i32>> = analyze("11:37:00 am".to_string(), "03:37:00 pm".to_string());
+    let test3: Option<Vec<i32>> = analyze("11:37:00 am".to_string(), "3:37:00 pm".to_string());
     if test3.is_some()
     {
         let test3_unwrapped = test3.unwrap();
@@ -81,12 +85,12 @@ fn test()
     {
         println!("[!] Test 3 failed!");
     }
-}
+} */
 
 fn analyze(start_user_input: String, end_user_input: String) -> Option<Vec<i32>>
 {
     /* verify user input */
-    let re = Regex::new(r"[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{1,3})?\s[A-Za-z]+").unwrap();
+    let re = Regex::new(r"[0-9]?[0-9]:[0-9]{2}:[0-9]{2}(\.[0-9]{1,3})?\s[A-Za-z]+").unwrap();
     if !re.is_match(&start_user_input) || !re.is_match(&end_user_input)
     {
         println!("[!] [error::regex] incorrect format!");
