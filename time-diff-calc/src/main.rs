@@ -21,33 +21,33 @@ fn main()
 fn test()
 {
     let test1: Option<Vec<i32>> = analyze("01:37:00 pm".to_string(), "02:37:00 pm".to_string());
-    if test1.is_some()
+    if test1.is_some() && test1.unwrap()[0] == 1
     {
-        println!("[0] Test 1 passed!")
+        println!("[0] Test 1 passed!");
     }
     else
     {
-        println!("[!] Test 1 failed!")
+        println!("[!] Test 1 failed!");
     }
 
     let test2: Option<Vec<i32>> = analyze("08:23:32 am".to_string(), "02:37:00 pm".to_string());
-    if test2.is_some()
+    if test2.is_some() && test2.unwrap()[0] == 6
     {
-        println!("[0] Test 2 passed!")
+        println!("[0] Test 2 passed!");
     }
     else
     {
-        println!("[!] Test 2 failed!")
+        println!("[!] Test 2 failed!");
     }
 
     let test3: Option<Vec<i32>> = analyze("11:37:00 am".to_string(), "03:37:00 pm".to_string());
-    if test3.is_some()
+    if test3.is_some() && test3.unwrap()[0] == 4
     {
-        println!("[0] Test 3 passed!")
+        println!("[0] Test 3 passed!");
     }
     else
     {
-        println!("[!] Test 3 failed!")
+        println!("[!] Test 3 failed!");
     }
 }
 
@@ -143,8 +143,8 @@ fn analyze(start_user_input: String, end_user_input: String) -> Option<Vec<i32>>
         return None;
     }
     
-    
-    let correct: Vec<i32> = vec![0,0,0];
+
+    let correct: Vec<i32> = vec![(start_h - end_h).abs(),0,0];
     return Some(correct);
 
 }
